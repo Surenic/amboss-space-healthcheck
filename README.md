@@ -27,6 +27,8 @@ echo "$JSON" | curl -sSf --data-binary @- -H "Content-Type: application/json" -X
 
 save by pressing CTRL + X, Y and enter.
 
+## Make it executable
+
 Log into super user by typing
 
 ```
@@ -43,13 +45,19 @@ this will make it executable for all users (inclusive 'bitcoin')
 
 type `exit` to get back to user 'admin'
 
-to start the script type
+## Start the script
+
+Type
 
 ```
 sudo -u bitcoin /home/bitcoin/amboss-ping.sh
 ```
 
-to run and execute the script. To make it run automatically, we have to create a cronjob for the user 'bitcoin'
+to run and execute the script. 
+
+## Make it run automatically
+
+To make it run automatically, we have to create a cronjob for the user 'bitcoin'
 
 ```
 sudo -u bitcoin crontab -e
