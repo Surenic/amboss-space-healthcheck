@@ -70,3 +70,7 @@ at the bottom of the file paste
 ```
 
 and save by CTRL + X, Y and enter. This will run the script at 00:03, 00:08, 00:13 and so on, every hour, every day to keep amboss informed, that your node is online. If it isn't, amboss will show your node as offline after 10 min.
+
+## Make it seen publicly
+
+Log in to amboss.space and check your monitoring settings. You'll find a switch to turn on your healthcheck settings for the public.
