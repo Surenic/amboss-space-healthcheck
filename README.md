@@ -1,4 +1,4 @@
-# amboss-space-healthcheck-CLN
+# amboss.space healthcheck for CLN Nodes
 How to add a healthcheck to your node's amboss page. This tutorial is based on raspiblitz's environment, but should work similar on other platforms. Watch out for users and file paths.
 
 ## Create a short script file
