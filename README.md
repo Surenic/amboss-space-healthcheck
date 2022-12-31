@@ -20,7 +20,7 @@ NOW=$(date -u +%Y-%m-%dT%H:%M:%S%z)
 echo "Timestamp: ${NOW}"
 SIGNATURE=$(/home/bitcoin/lightning/cli/lightning-cli signmessage "$NOW" | jq -r .zbase)
 echo "Signature: ${SIGNATURE}"
-JSON="{\"query\": \"mutation HealthCheck(\$signature: String!, \$timestamp: String!) { healthCheck(signature: \$signature, timestamp: \$timestamp) }\", \"variables\": {\"signature\": \"$SIGNATURE\", \"timestam>
+JSON="{\"query\": \"mutation HealthCheck(\$signature: String!, \$timestamp: String!) { healthCheck(signature: \$signature, timestamp: \$timestamp) }\", \"variables\": {\"signature\": \"$SIGNATURE\", \"timestamp\": \"$NOW\"}}"
 echo "Sending ping..."
 echo "$JSON" | curl -sSf --data-binary @- -H "Content-Type: application/json" -X POST $URL
 ```
