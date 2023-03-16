@@ -1,4 +1,4 @@
-# amboss.space healthcheck for CLN Nodes
+# amboss.space healthcheck for CLN/LND Nodes
 How to add a healthcheck to your node's amboss page. This tutorial is based on raspiblitz's environment, but should work similar on other platforms. Watch out for users and file paths.
 
 ## Create a short script file
@@ -11,6 +11,7 @@ sudo nano /home/bitcoin/amboss-ping.sh
 
 and paste in the following lines
 
+For CLN
 ```
 #!/bin/bash
 # Sends a health check ping to the Amboss API. 
@@ -25,6 +26,17 @@ echo "Sending ping..."
 echo "$JSON" | curl -sSf --data-binary @- -H "Content-Type: application/json" -X POST $URL
 ```
 
+For LND
+```
+#!/bin/bash
+URL="https://api.amboss.space/graphql"
+NOW=$(date -u +%Y-%m-%dT%H:%M:%S%z)
+SIGNATURE=$(/usr/local/bin/lncli signmessage "$NOW" | jq -r .signature)
+JSON="{\"query\": \"mutation HealthCheck(\$signature: String!, \$timestamp: String!) { healthCheck(signature: \$signature, timestamp: \$timestamp) }\", \"variables\": {\"signature\": \"$SIGNATURE\", \"timestamp\": \"$NOW\"}}"
+echo "$JSON" | curl -s --data-binary @- -H "Content-Type: application/json" -X POST --output /dev/null $URL
+```
+
+
 save by pressing CTRL + X, Y and enter.
 
 ## Make it executable
@@ -38,7 +50,7 @@ su
 and give proper rights to the file
 
 ```
-chmod +ax /home/bitcoin/amboss-ping.sh
+chmod a+x /home/bitcoin/amboss-ping.sh
 ```
 
 this will make it executable for all users (inclusive 'bitcoin')
@@ -66,7 +78,7 @@ sudo -u bitcoin crontab -e
 at the bottom of the file paste
 
 ```
-3,8,13,18,23,28,33,38,43,48,53,58 * * * * /home/bitcoin/amboss-ping.sh
+3,8,13,18,23,28,33,38,43,48,53,58 * * * * /bin/sh /home/bitcoin/amboss-ping.sh
 ```
 
 and save by CTRL + X, Y and enter. This will run the script at 00:03, 00:08, 00:13 and so on, every hour, every day to keep amboss informed, that your node is online. If it isn't, amboss will show your node as offline after 10 min.
